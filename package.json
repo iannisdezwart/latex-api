@@ -1,0 +1,16 @@
+{
+  "name": "latex-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Iannis de Zwart",
+  "license": "ISC",
+  "dependencies": {
+    "@iannisz/node-api-kit": "^0.0.3",
+    "@types/node": "^16.11.6"
+  }
+}
