@@ -70,7 +70,9 @@ api.post('/render', async (req, res) => {
 
 	fs
 		.createReadStream(`${ tempDir }/file.svg`)
-		.pipe(replacestream(/<\?xml.*\?>\n/, ''))
+		.pipe(replacestream(/<\?xml.*\?>\n/g, ''))
+		.pipe(replacestream(/<!--.*-->\n/g, ''))
+		.pipe(replacestream(/xlink:href/g, 'href'))
 		.pipe(res)
 
 	// Delete the temp directory.
