@@ -21,9 +21,11 @@ ${ latex.trim() }
 `
 
 const compileLatex = (
-	tempDir: string
+	tempDir: string,
+	scale: number
 ) => new Promise<void>((resolve, reject) => {
-	const cmd = `cd ${ tempDir } && latex file.tex && dvisvgm --no-fonts file.dvi`
+	const cmd = `cd ${ tempDir } && latex file.tex \
+		&& dvisvgm --no-fonts --scale=${ scale.toFixed(1) } --exact file.dvi`
 	const child = exec(cmd)
 	let exited = false
 
@@ -48,6 +50,7 @@ api.post('/render', async (req, res) => {
 	const latex = wrapLatex(await readBody(req))
 	const id = randomBytes(16).toString('hex')
 	const tempDir = `temp/${ id }`
+	const scale = +req.headers['x-scale'] || 1
 
 	// Store the LaTeX equation into a file.
 
@@ -57,7 +60,7 @@ api.post('/render', async (req, res) => {
 	// Compile the LaTex equation to an svg file.
 
 	try {
-		await compileLatex(tempDir)
+		await compileLatex(tempDir, scale)
 	}
 	catch {
 		res.statusCode = 500
