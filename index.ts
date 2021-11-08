@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import { createAPI, readBody } from '@iannisz/node-api-kit'
 import { randomBytes } from 'crypto'
 import { exec } from 'child_process'
+import * as replacestream from 'replacestream'
 
 const PORT = +process.argv[2] || 3000
 
@@ -67,7 +68,10 @@ api.post('/render', async (req, res) => {
 
 	// Stream the svg output to the client.
 
-	fs.createReadStream(`${ tempDir }/file.svg`).pipe(res)
+	fs
+		.createReadStream(`${ tempDir }/file.svg`)
+		.pipe(replacestream(/<\?xml.*\?>\n/, ''))
+		.pipe(res)
 
 	// Delete the temp directory.
 

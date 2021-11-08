@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@iannisz/node-api-kit": "^0.0.3",
-    "@types/node": "^16.11.6"
+    "@types/node": "^16.11.6",
+    "@types/replacestream": "^4.0.1",
+    "replacestream": "^4.0.3"
   }
 }
