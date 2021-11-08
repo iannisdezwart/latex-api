@@ -43,7 +43,7 @@ const compileLatex = (
 
 const api = createAPI(PORT)
 
-api.get('/render', async (req, res) => {
+api.post('/render', async (req, res) => {
 	const latex = wrapLatex(await readBody(req))
 	const id = randomBytes(16).toString('hex')
 	const tempDir = `temp/${ id }`
