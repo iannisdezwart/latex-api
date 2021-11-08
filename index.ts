@@ -23,15 +23,22 @@ const compileLatex = (
 	tempDir: string
 ) => new Promise<void>((resolve, reject) => {
 	const cmd = `cd ${ tempDir } && latex file.tex && dvisvgm --no-fonts file.dvi`
+	const child = exec(cmd)
+	let exited = false
 
-	exec(cmd, (err, _stdout, stderr) => {
-		if (err) {
-			reject(stderr)
-			return
-		}
+	child.on('error', reject)
 
+	child.on('exit', () => {
 		resolve()
+		exited = true
 	})
+
+	setTimeout(() => {
+		if (!exited) {
+			child.kill()
+			reject('Timeout')
+		}
+	}, 5000)
 })
 
 const api = createAPI(PORT)
