@@ -61,6 +61,8 @@ api.get('/render', async (req, res) => {
 	catch {
 		res.statusCode = 500
 		res.end('Error while compiling LaTeX equation')
+		fs.rmdirSync(tempDir, { recursive: true })
+		return
 	}
 
 	// Stream the svg output to the client.
